@@ -29,26 +29,58 @@ class _SholatPageState extends State<SholatPage> {
   @override
   Widget build(BuildContext context) {
     print(data["items"]);
-      return Container(
-      child: Card(
-        child:  Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[Column(
-                  children: <Widget>[
-                    Text(data["city"] != null ? data["city"] : "nama kota"),
-                    Text("tanggal")
-                  ]
-                )]
-              ),
-              Row(children: <Widget>[Expanded(child: Text("Shubuh")), Expanded(child: Text("subuh"))]),
-              Row(children: <Widget>[Expanded(child: Text("Fajar")), Expanded(child: Text("fajar"))]),
-              Row(children: <Widget>[Expanded(child: Text("Dzuhur")), Expanded(child: Text("ds"))]),
-              Row(children: <Widget>[Expanded(child: Text("Ashar")), Expanded(child: Text("as"))]),
-              Row(children: <Widget>[Expanded(child: Text("Maghrib")), Expanded(child: Text("asa"))]),
-              Row(children: <Widget>[Expanded(child: Text("Isya")), Expanded(child: Text("asas"))]),
-            ],
-        )
-      )
-    );
+    return Container(
+        child: Card(
+            child: Column(
+      children: <Widget>[
+        Row(children: <Widget>[
+          Column(children: <Widget>[
+            Text(data["city"] != null ? data["city"] : "nama kota"),
+            Text(data["items"] != null
+                ? data["items"][0]["date_for"]
+                : "tanggal")
+          ])
+        ]),
+        Row(children: <Widget>[
+          Expanded(child: Text("Shubuh")),
+          Expanded(
+              child: Text(
+                  data["items"] != null ? data["items"][0]["fajr"] : "tanggal"))
+        ]),
+        Row(children: <Widget>[
+          Expanded(child: Text("Fajar")),
+          Expanded(
+              child: Text(data["items"] != null
+                  ? data["items"][0]["shurooq"]
+                  : "tanggal"))
+        ]),
+        Row(children: <Widget>[
+          Expanded(child: Text("Dzuhur")),
+          Expanded(
+              child: Text(data["items"] != null
+                  ? data["items"][0]["dhuhr"]
+                  : "tanggal"))
+        ]),
+        Row(children: <Widget>[
+          Expanded(child: Text("Ashar")),
+          Expanded(
+              child: Text(
+                  data["items"] != null ? data["items"][0]["asr"] : "tanggal"))
+        ]),
+        Row(children: <Widget>[
+          Expanded(child: Text("Maghrib")),
+          Expanded(
+              child: Text(data["items"] != null
+                  ? data["items"][0]["maghrib"]
+                  : "tanggal"))
+        ]),
+        Row(children: <Widget>[
+          Expanded(child: Text("Isya")),
+          Expanded(
+              child: Text(
+                  data["items"] != null ? data["items"][0]["isha"] : "tanggal"))
+        ]),
+      ],
+    )));
+  }
 }
