@@ -44,13 +44,7 @@ class _MyAppState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Egg Timer',
-      theme: new ThemeData(
-        fontFamily: 'BebasNeue',
-      ),
-      home: new Scaffold(
-        body: new Container(
+    return new Container(
           child: new Center(
             child: new Column(
               children: [
@@ -86,8 +80,6 @@ class _MyAppState extends State<HomePage> {
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 }

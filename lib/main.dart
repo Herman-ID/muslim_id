@@ -5,6 +5,7 @@ import 'package:muslim_id/pages/kabahPage.dart';
 import 'package:muslim_id/pages/morePage.dart';
 import 'package:muslim_id/pages/sholatPage.dart';
 import 'package:muslim_id/pages/zakatPage.dart';
+import 'package:muslim_id/pages/nointernet.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Muslim ID'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -36,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final ZakatPage _zakat = ZakatPage();
   final SholatPage _sholat = SholatPage();
-  final MorePage _more = MorePage();
+  final NoInternet _more = NoInternet();
   final KabahPage _kabah = KabahPage();
   final HomePage _home = HomePage();
 
@@ -69,20 +71,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         bottomNavigationBar: CurvedNavigationBar(
           index: _page,
-          height: 75.0,
           items: <Widget>[
             Icon(Icons.home,
-                size: 24, color: _page == 0 ? Colors.black : Colors.white),
+                size: 24, color: _page == 0 ? Colors.black : Colors.grey),
             Icon(Icons.access_alarm,
-                size: 24, color: _page == 1 ? Colors.black : Colors.white),
+                size: 24, color: _page == 1 ? Colors.black : Colors.grey),
             Icon(Icons.gps_fixed,
-                size: 24, color: _page == 2 ? Colors.black : Colors.white),
+                size: 24, color: _page == 2 ? Colors.black : Colors.grey),
             Icon(Icons.card_giftcard,
-                size: 24, color: _page == 3 ? Colors.black : Colors.white),
+                size: 24, color: _page == 3 ? Colors.black : Colors.grey),
             Icon(Icons.menu,
-                size: 24, color: _page == 4 ? Colors.black : Colors.white),
+                size: 24, color: _page == 4 ? Colors.black : Colors.grey),
           ],
-          color: Colors.green,
+          color: Colors.white,
           buttonBackgroundColor: Colors.white,
           backgroundColor: Colors.white,
           animationCurve: Curves.easeInOut,
@@ -94,12 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
             });
           },
         ),
-        body: Container(
-            color: Colors.white,
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+        body: SafeArea(
+          child: Container(
               child: _showPage,
-            )));
+              ),
+        ));
   }
 }
