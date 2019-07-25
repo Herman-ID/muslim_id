@@ -26,15 +26,17 @@ class _SholatPageState extends State<SholatPage> {
   Future<String> getData() async {
     print(lat);
     if(this.lng != null && this.lat != null) {
+      print('https://api.pray.zone/v2/times/today.json?longitude='+this.lng.toString()+'&latitude='+this.lat.toString()+'&elevation=333');
       http.Response respon = await http.get(
           Uri.encodeFull(
               'https://api.pray.zone/v2/times/today.json?longitude='+this.lng.toString()+'&latitude='+this.lat.toString()+'&elevation=333'),
           headers: {"Accept": "Application/json",});
 
+      Map dat = json.decode(respon.body);
       setState(() {
-        data = json.decode(respon.body);
+        data = dat["results"]['datetime'][0]['times'];
       });
-      print(respon.body);
+      print(dat);
       return "success";
     }
   }
@@ -94,13 +96,13 @@ class _SholatPageState extends State<SholatPage> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        'Subuh',
+                        'Imsak',
                         style: TextStyle(color: Colors.white),
                       ),
                       Spacer(),
                       Text(
-                          data['items'] != null
-                              ? data["items"][0]["fajr"]
+                          data['Imsak'] != null
+                              ? data["Imsak"]
                               : lat.toString(),
                           style: TextStyle(color: Colors.white)),
                     ],
@@ -124,8 +126,8 @@ class _SholatPageState extends State<SholatPage> {
                       ),
                       Spacer(),
                       Text(
-                          data['items'] != null
-                              ? data["items"][0]["fajr"]
+                          data['Fajr'] != null
+                              ? data["Fajr"]
                               : 'fajr',
                           style: TextStyle(color: Colors.white)),
                     ],
@@ -144,13 +146,13 @@ class _SholatPageState extends State<SholatPage> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        'Subuh',
+                        'Dzuhur',
                         style: TextStyle(color: Colors.white),
                       ),
                       Spacer(),
                       Text(
-                          data['items'] != null
-                              ? data["items"][0]["fajr"]
+                          data['Dhuhr'] != null
+                              ? data["Dhuhr"]
                               : 'fajr',
                           style: TextStyle(color: Colors.white)),
                     ],
@@ -169,13 +171,13 @@ class _SholatPageState extends State<SholatPage> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        'Subuh',
+                        'Ashar',
                         style: TextStyle(color: Colors.white),
                       ),
                       Spacer(),
                       Text(
-                          data['items'] != null
-                              ? data["items"][0]["fajr"]
+                          data['Asr'] != null
+                              ? data["Asr"]
                               : 'fajr',
                           style: TextStyle(color: Colors.white)),
                     ],
@@ -194,13 +196,38 @@ class _SholatPageState extends State<SholatPage> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        'Subuh',
+                        'Maghrib',
                         style: TextStyle(color: Colors.white),
                       ),
                       Spacer(),
                       Text(
-                          data['items'] != null
-                              ? data["items"][0]["fajr"]
+                          data['Maghrib'] != null
+                              ? data["Maghrib"]
+                              : 'fajr',
+                          style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 10.0,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'Isya',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Spacer(),
+                      Text(
+                          data['Isha'] != null
+                              ? data["Isha"]
                               : 'fajr',
                           style: TextStyle(color: Colors.white)),
                     ],

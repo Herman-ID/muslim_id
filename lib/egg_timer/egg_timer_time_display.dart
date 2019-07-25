@@ -83,28 +83,26 @@ class _EggTimerTimeDisplayState extends State<EggTimerTimeDisplay>
             transform: new Matrix4.translationValues(
                 0.0, -200.0 * selectionTimeSlideController.value, 0.0),
             child: new Text(
-              formattedSelectionTime,
+              formattedSelectionTime + ' Menit',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.black,
                 fontFamily: 'BebasNeue',
-                fontSize: 50.0,
+                fontSize: 35.0,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 10.0,
               ),
             ),
           ),
           new Opacity(
             opacity: 1.0 - countdownTimeFadeController.value,
             child: new Text(
-              formattedCountdownTime,
+              formattedCountdownTime + ' Menit',
               textAlign: TextAlign.center,
               style: const TextStyle(
                 color: Colors.black,
                 fontFamily: 'BebasNeue',
-                fontSize: 50.0,
+                fontSize: 35.0,
                 fontWeight: FontWeight.bold,
-                letterSpacing: 10.0,
               ),
             ),
           ),

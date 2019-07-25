@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         return _zakat;
         break;
       case 4:
-        return _more;
+        return _home;
         break;
       default:
         return new Container(
