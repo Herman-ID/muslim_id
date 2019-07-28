@@ -18,6 +18,9 @@ dependencies:
   permission_handler: ^3.1.0
   flutter_spinkit: ^3.1.0
   location: ^2.3.5
+  hijri: ^0.2.5
+  libpray: ^0.2.0
+  url_launcher: ^5.0.3
 
 dev_dependencies:
   flutter_test:

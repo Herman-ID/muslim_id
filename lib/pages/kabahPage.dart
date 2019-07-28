@@ -5,10 +5,6 @@ import 'package:flutter_compass/flutter_compass.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class KabahPage extends StatefulWidget {
-  const KabahPage({
-    Key key,
-  }) : super(key: key);
-
   @override
   _KabahPageState createState() => _KabahPageState();
 }
@@ -27,12 +23,18 @@ class _KabahPageState extends State<KabahPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return 
+      Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text('Flutter Compass'),
+        
+      appBar: AppBar(
+        title: Text(
+          'Arah Kiblat',
+          style: TextStyle(color: Colors.black),
         ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
         body: Builder(builder: (context) {
           if (_hasPermissions) {
             return Column(
@@ -45,7 +47,6 @@ class _KabahPageState extends State<KabahPage> {
             return _buildPermissionSheet();
           }
         }),
-      ),
     );
   }
 

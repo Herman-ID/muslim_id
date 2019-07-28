@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:muslim_id/pages/homePage.dart';
-import 'package:muslim_id/pages/kabahPage.dart';
-import 'package:muslim_id/pages/morePage.dart';
-import 'package:muslim_id/pages/sholatPage.dart';
-import 'package:muslim_id/pages/zakatPage.dart';
-import 'package:muslim_id/pages/nointernet.dart';
+import 'pages/tabPage.dart';
+import 'pages/splashPage.dart';
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
@@ -20,6 +18,9 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Muslim ID'),
       debugShowCheckedModeBanner: false,
+      routes: <String, WidgetBuilder>{
+        '/HomeScreen': (BuildContext context) => new TabPage()
+      },
     );
   }
 }
@@ -34,71 +35,53 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _page = 0;
+ _checkInternet() async{
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
 
-  final ZakatPage _zakat = ZakatPage();
-  final SholatPage _sholat = SholatPage();
-  final NoInternet _more = NoInternet();
-  final KabahPage _kabah = KabahPage();
-  final HomePage _home = HomePage();
-
-  Widget _showPage = new HomePage();
-  Widget _pageChooser(int page) {
-    switch (page) {
-      case 0:
-        return _home;
-        break;
-      case 1:
-        return _sholat;
-        break;
-      case 2:
-        return _kabah;
-        break;
-      case 3:
-        return _zakat;
-        break;
-      case 4:
-        return _home;
-        break;
-      default:
-        return new Container(
-            child: new Center(child: new Text(page.toString())));
+        var _duration = new Duration(seconds: 5);
+        return new Timer(_duration, navigationPage);
+      }
+    } on SocketException catch (_) {
+      _showAlert(context);
     }
+
+  }
+   void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Aktifkan Internet"),
+          content: Text("Anda tidak terhubung dengan internet mohon coba lagi"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("COBA LAGI"),
+              onPressed: () {
+                _checkInternet();
+              },
+            ),
+          ],
+        )
+    );
+  }
+  void navigationPage() {
+    Navigator.of(context).pushReplacementNamed('/HomeScreen');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+   _checkInternet();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: CurvedNavigationBar(
-          index: _page,
-          items: <Widget>[
-            Icon(Icons.home,
-                size: 24, color: _page == 0 ? Colors.black : Colors.grey),
-            Icon(Icons.access_alarm,
-                size: 24, color: _page == 1 ? Colors.black : Colors.grey),
-            Icon(Icons.gps_fixed,
-                size: 24, color: _page == 2 ? Colors.black : Colors.grey),
-            Icon(Icons.card_giftcard,
-                size: 24, color: _page == 3 ? Colors.black : Colors.grey),
-            Icon(Icons.menu,
-                size: 24, color: _page == 4 ? Colors.black : Colors.grey),
-          ],
-          color: Colors.white,
-          buttonBackgroundColor: Colors.white,
-          backgroundColor: Colors.white,
-          animationCurve: Curves.easeInOut,
-          animationDuration: Duration(milliseconds: 600),
-          onTap: (index) {
-            setState(() {
-              _page = index;
-              _showPage = _pageChooser(index);
-            });
-          },
-        ),
-        body: SafeArea(
-          child: Container(
-              child: _showPage,
-              ),
-        ));
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    return SplashPage();
   }
 }

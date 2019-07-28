@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
+import 'package:libpray/libpray.dart';
 
 class SholatPage extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class SholatPage extends StatefulWidget {
 
 class _SholatPageState extends State<SholatPage> {
   var data = new Map();
+  List vdata;
 
   String error;
   LocationData _currentLocation;
@@ -24,26 +26,50 @@ class _SholatPageState extends State<SholatPage> {
   String id;
 
   Future<String> getData() async {
-    print(lat);
     if(this.lng != null && this.lat != null) {
-      print('https://api.pray.zone/v2/times/today.json?longitude='+this.lng.toString()+'&latitude='+this.lat.toString()+'&elevation=333');
-      http.Response respon = await http.get(
-          Uri.encodeFull(
-              'https://api.pray.zone/v2/times/today.json?longitude='+this.lng.toString()+'&latitude='+this.lat.toString()+'&elevation=333'),
-          headers: {"Accept": "Application/json",});
+      final PrayerCalculationSettings settings = PrayerCalculationSettings((PrayerCalculationSettingsBuilder b) =>
+      b..calculationMethod.replace(CalculationMethod.fromPreset(preset: CalculationMethodPreset.departmentOfIslamicAdvancementOfMalaysia)));
 
-      Map dat = json.decode(respon.body);
-      setState(() {
-        data = dat["results"]['datetime'][0]['times'];
-      });
-      print(dat);
-      return "success";
+      final DateTime when = DateTime.now();
+        final Geocoordinate geo = Geocoordinate((GeocoordinateBuilder b) => b
+    ..latitude = lat
+    ..longitude = lng);
+  const double timezone = 7.0;
+   final Prayers prayers = Prayers.on(date: when, settings: settings, coordinate: geo, timeZone: timezone);
+  print(prayers.imsak);
+  print(prayers.fajr);
+  print(prayers.sunrise);
+  print(prayers.dhuha);
+  print(prayers.dhuhr);
+  print(prayers.asr);
+  print(prayers.sunset);
+  print(prayers.maghrib);
+  print(prayers.isha);
+  print(prayers.midnight);
+      // http.Response respon = await http.get(
+      //     Uri.encodeFull(
+      //         'https://api.pray.zone/v2/times/today.json?longitude='+this.lng.toString()+'&latitude='+this.lat.toString()+'&elevation=333'),
+      //     headers: {"Accept": "Application/json",});
+      // print('https://api.pray.zone/v2/times/today.json?longitude='+this.lng.toString()+'&latitude='+this.lat.toString()+'&elevation=333');
+      // Map dat = json.decode(respon.body);
+      // Map mdata = dat["results"]['datetime'][0]['times'];
+      // List xdat = mdata.values.toList();
+      // setState(() {
+      //   data = dat["results"]['datetime'][0]['times'];
+      //   vdata = xdat;
+      // });
+      // for (String i in xdat) {
+      //   List time = i.split(':');
+      //   var timenow = DateTime.now();
+      //   var oy = TimeOfDay(hour: int.parse(time[0]), minute: int.parse(time[1]));
+      //   var x = DateTime(timenow.year, timenow.month, timenow.day, oy.hour, oy.minute);
+      //   print(x.difference(timenow).toString());
+      // } 
+      // return "success";
     }
   }
 
   void loadLocation() async {
-
-    print('do');
     try {
       _currentLocation = await _locationService.getLocation();
     } on PlatformException catch (e) {
@@ -55,7 +81,6 @@ class _SholatPageState extends State<SholatPage> {
       _currentLocation = null;
     }
     if (_currentLocation != null) {
-      print('oy');
       if (mounted) {
         setState(() {
           isLoading = true;
@@ -72,8 +97,7 @@ class _SholatPageState extends State<SholatPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(data);
-    return lat == null ? Center (child: SpinKitRing(color: Colors.blueAccent,)) : Container(
+    return data['Imsak']== null ? Center (child: SpinKitRing(color: Colors.blueAccent,)) : Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
@@ -103,7 +127,7 @@ class _SholatPageState extends State<SholatPage> {
                       Text(
                           data['Imsak'] != null
                               ? data["Imsak"]
-                              : lat.toString(),
+                              : 'Loading...',
                           style: TextStyle(color: Colors.white)),
                     ],
                   ),
@@ -128,7 +152,7 @@ class _SholatPageState extends State<SholatPage> {
                       Text(
                           data['Fajr'] != null
                               ? data["Fajr"]
-                              : 'fajr',
+                              : 'Loading...',
                           style: TextStyle(color: Colors.white)),
                     ],
                   ),
@@ -153,7 +177,7 @@ class _SholatPageState extends State<SholatPage> {
                       Text(
                           data['Dhuhr'] != null
                               ? data["Dhuhr"]
-                              : 'fajr',
+                              : 'Loading...',
                           style: TextStyle(color: Colors.white)),
                     ],
                   ),
@@ -178,7 +202,7 @@ class _SholatPageState extends State<SholatPage> {
                       Text(
                           data['Asr'] != null
                               ? data["Asr"]
-                              : 'fajr',
+                              : 'Loading...',
                           style: TextStyle(color: Colors.white)),
                     ],
                   ),
@@ -203,7 +227,7 @@ class _SholatPageState extends State<SholatPage> {
                       Text(
                           data['Maghrib'] != null
                               ? data["Maghrib"]
-                              : 'fajr',
+                              : 'Loading...',
                           style: TextStyle(color: Colors.white)),
                     ],
                   ),
